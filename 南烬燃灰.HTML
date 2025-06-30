@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>密码保护页面</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+   .password-box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+   .password-box h2 {
+      color: #4a90e2;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+   .password-input {
+      padding: 12px 15px;
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+   .btn {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+   .btn:hover {
+      background-color: #357abd;
+    }
+
+   .content-area {
+      display: none;
+      max-width: 600px;
+      margin-top: 20px;
+      padding: 40px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      line-height: 1.8;
+    }
+
+   .content-area h1 {
+      color: #555;
+      margin-top: 0;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+      font-size: 24px;
+    }
+
+   .content-area p {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #666;
+    }
+
+   .content-area.highlight {
+      color: #f05050;
+      font-weight: 500;
+    }
+
+    /* 音频样式 */
+    audio {
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="password-box" id="passwordBox">
+    <h2>请输入密码进入页面</h2>
+    <input type="password" class="password-input" id="passwordInput" placeholder="输入密码">
+    <button class="btn" id="verifyBtn">验证</button>
+  </div>
+
+  <div class="content-area" id="contentArea">
+    <h1>你好啊，慕卿然</h1>
+    <p>这是一封离别信，当你看到时我已经彻底放下。</p >
+    <p>我原来对你并非还存在喜欢，而是不甘，不甘陪你日日夜夜，却只能卑微的喜欢着你，最后被某人横刀夺爱。</p >
+    <p>我依然能记得在小路看星星的那个夜晚，我们肩并肩陪伴彼此，但那晚夜色朦胧就像我们的未来一样一片死寂，我那晚就应该猜到的。</p >
+    <p>你送的星星瓶，兔子，六一信我还留着，想起来我却没有送过你什么有意义的礼物，我真的很自私，有爱无行。</p >
+    <p>但是<span class="highlight">陪伴和真心真的就这么廉价吗</span>。</p >
+    <p>“等闲变却故人心，却道故人心易变”，往昔种种，皆成云烟。如今我已释然，不再困于过往。愿你此后，岁岁皆胜意，步步皆坦途。我亦将收拾行囊，奔赴属于自己的新程。</p >
+    <p>勿念。</p >
+    <!-- 添加音频 -->
+    <audio controls>
+      <source src="C:\CloudMusic\love.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    const password = "070730";
+    const passwordBox = document.getElementById("passwordBox");
+    const contentArea = document.getElementById("contentArea");
+    const verifyBtn = document.getElementById("verifyBtn");
+    const passwordInput = document.getElementById("passwordInput");
+    let attemptCount = 0;
+
+    verifyBtn.addEventListener("click", function () {
+      const inputPassword = passwordInput.value;
+      attemptCount++;
+
+      if (inputPassword === password) {
+        passwordBox.style.display = "none";
+        contentArea.style.display = "block";
+        // 尝试自动播放音乐（需要用户交互，部分浏览器可能阻止）
+        const audio = contentArea.querySelector('audio');
+        if (audio) {
+          audio.play().catch(err => {
+            console.log('自动播放失败，需要用户手动播放：', err);
+          });
+        }
+      } else {
+        passwordInput.value = "";
+        passwordInput.placeholder = "密码错误，请重新输入";
+
+        if (attemptCount >= 3) {
+          alert("尝试次数过多，页面即将关闭");
+          setTimeout(function () {
+            window.close();
+          }, 1000);
+        }
+      }
+    });
+
+    passwordInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        verifyBtn.click();
+      }
+    });
+  </script>
+</body>
+
+</html>
